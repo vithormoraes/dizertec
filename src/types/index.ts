@@ -1,0 +1,149 @@
+// Tipos globais do DizerTech
+
+// Status de projeto
+export type ProjectStatus = 'active' | 'archived' | 'on-hold'
+
+// Roles de membros
+export type MemberRole = 'owner' | 'admin' | 'member' | 'viewer'
+
+// Ambientes de deploy
+export type DeploymentEnvironment = 'development' | 'staging' | 'production'
+
+// Status de deployment
+export type DeploymentStatus = 'success' | 'failed' | 'pending' | 'building'
+
+// Profile do usuário
+export interface Profile {
+  id: string
+  full_name: string | null
+  avatar_url: string | null
+  email?: string
+  created_at: string
+  updated_at: string
+}
+
+// Projeto
+export interface Project {
+  id: string
+  name: string
+  description: string | null
+  repository_url: string | null
+  technologies: string[]
+  status: ProjectStatus
+  owner_id: string
+  created_at: string
+  updated_at: string
+  // Relações
+  owner?: Profile
+  members?: ProjectMember[]
+  deployments?: Deployment[]
+  notes?: ProjectNote[]
+}
+
+// Membro do projeto
+export interface ProjectMember {
+  id: string
+  project_id: string
+  user_id: string
+  role: MemberRole
+  created_at: string
+  // Relações
+  user?: Profile
+  project?: Project
+}
+
+// Deployment
+export interface Deployment {
+  id: string
+  project_id: string
+  environment: DeploymentEnvironment
+  url: string | null
+  status: DeploymentStatus
+  deployed_at: string
+  deployed_by: string
+  git_commit: string | null
+  git_branch: string | null
+  created_at: string
+  // Relações
+  deployer?: Profile
+  project?: Project
+}
+
+// Nota do projeto
+export interface ProjectNote {
+  id: string
+  project_id: string
+  title: string
+  content: string | null
+  author_id: string
+  created_at: string
+  updated_at: string
+  // Relações
+  author?: Profile
+  project?: Project
+}
+
+// Repositório Git
+export interface GitRepository {
+  id: string
+  project_id: string
+  repository_url: string
+  last_sync_at: string | null
+  default_branch: string | null
+  created_at: string
+  updated_at: string
+}
+
+// Analytics do projeto
+export interface ProjectAnalytics {
+  id: string
+  project_id: string
+  date: string
+  commits_count: number
+  deployments_count: number
+  active_members_count: number
+  created_at: string
+}
+
+// Estatísticas do dashboard
+export interface DashboardStats {
+  total_projects: number
+  active_projects: number
+  total_deployments: number
+  successful_deployments: number
+  total_members: number
+  recent_activity: ActivityItem[]
+}
+
+// Item de atividade
+export interface ActivityItem {
+  id: string
+  type: 'deployment' | 'note' | 'member' | 'project'
+  title: string
+  description: string
+  timestamp: string
+  project_id?: string
+  project_name?: string
+  user?: Profile
+}
+
+// Filtros de projeto
+export interface ProjectFilters {
+  status?: ProjectStatus
+  technology?: string
+  search?: string
+}
+
+// Paginação
+export interface PaginationParams {
+  page: number
+  limit: number
+}
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
