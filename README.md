@@ -138,7 +138,16 @@ npm run lint     # Verificação de linting
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave anônima do Supabase |
 | `NEXT_PUBLIC_SITE_URL` | URL do site (para redirecionamentos) |
 
-## 🚧 Próximos Passos
+## � Acesso público (site) — Redirecionado para o app
+
+> Observação: para reduzir a exposição pública, todas as rotas não-autenticadas e públicas agora são redirecionadas para `/(auth)/login`. Rotas de API (`/api`) e as rotas protegidas do app continuam acessíveis.
+
+Como reverter:
+
+- Abra `src/middleware.ts` e remova ou comente o bloco com o comentário `// Bloqueia/Redireciona todas as rotas públicas para o app`.
+- Ou reverta o commit que implementou a mudança: `git revert <commit>`.
+
+## �🚧 Próximos Passos
 
 - [ ] Integração com GitHub/GitLab APIs
 - [ ] Webhooks para sincronização automática
