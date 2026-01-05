@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { mockUser } from '@/lib/mock-data'
 
 // Flag para modo de desenvolvimento sem Supabase
 const MOCK_MODE = !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -10,9 +11,8 @@ export async function middleware(request: NextRequest) {
     request,
   })
 
-  // Em MOCK_MODE (desenvolvimento), não inicializamos Supabase; assumimos usuário nulo
-  // porque queremos forçar o redirecionamento das rotas públicas ao app.
-  let user = null as any | null
+  // Em MOCK_MODE tratamos sempre como usuário autenticado com base no mockUser.
+  let user: any | null = MOCK_MODE ? mockUser : null
 
   let supabase: ReturnType<typeof createServerClient> | null = null
 

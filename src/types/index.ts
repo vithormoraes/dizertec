@@ -9,8 +9,15 @@ export type MemberRole = 'owner' | 'admin' | 'member' | 'viewer'
 // Ambientes de deploy
 export type DeploymentEnvironment = 'development' | 'staging' | 'production'
 
+// Ambiente de credencial de acesso
+export type CredentialEnvironment = 'production' | 'staging' | 'development'
+
 // Status de deployment
 export type DeploymentStatus = 'success' | 'failed' | 'pending' | 'building'
+
+// Status e prioridade de tarefas
+export type TaskStatus = 'pending' | 'in-progress' | 'review' | 'completed'
+export type TaskPriority = 'low' | 'medium' | 'high'
 
 // Profile do usuário
 export interface Profile {
@@ -81,6 +88,40 @@ export interface ProjectNote {
   // Relações
   author?: Profile
   project?: Project
+}
+
+// Tarefas do projeto
+export interface ProjectTask {
+  id: string
+  project_id: string
+  title: string
+  description: string | null
+  status: TaskStatus
+  priority: TaskPriority
+  owner_id: string
+  due_date: string | null
+  tags?: string[]
+  technologies?: string[]
+  prompts?: any[]
+  outputFormat?: string
+  created_at: string
+  updated_at: string
+  // Relações
+  owner?: Profile
+  project?: Project
+}
+
+// Credencial de acesso
+export interface AccessCredential {
+  id: string
+  project_id: string
+  service_name: string
+  username: string
+  password: string
+  url: string | null
+  environment: CredentialEnvironment
+  created_at: string
+  updated_at: string
 }
 
 // Repositório Git

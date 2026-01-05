@@ -1,5 +1,5 @@
 // Dados mockados para desenvolvimento
-import type { Profile, Project, Deployment, ProjectNote, ProjectMember, DashboardStats, ActivityItem } from '@/types'
+import type { Profile, Project, Deployment, ProjectNote, ProjectMember, DashboardStats, ActivityItem, ProjectTask, AccessCredential } from '@/types'
 
 // Usuário mockado
 export const mockUser: Profile = {
@@ -296,6 +296,134 @@ export const mockNotes: ProjectNote[] = [
   },
 ]
 
+// Credenciais de acesso mockadas
+export const mockCredentials: AccessCredential[] = [
+  {
+    id: 'cred-1',
+    project_id: 'proj-1',
+    service_name: 'Supabase Admin',
+    username: 'admin@ecommerce.com',
+    password: 'Sup3rS3cureP@ssw0rd!',
+    url: 'https://app.supabase.com',
+    environment: 'production',
+    created_at: new Date(Date.now() - 86400000 * 15).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+  },
+  {
+    id: 'cred-2',
+    project_id: 'proj-1',
+    service_name: 'Admin Dashboard',
+    username: 'admin@dizertech.com',
+    password: 'D@shb0ard2025!',
+    url: 'https://admin.ecommerce.dizertech.com',
+    environment: 'production',
+    created_at: new Date(Date.now() - 86400000 * 20).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+  },
+  {
+    id: 'cred-3',
+    project_id: 'proj-1',
+    service_name: 'AWS Console',
+    username: 'dizertech-admin',
+    password: 'AWS!Prod#2025',
+    url: 'https://console.aws.amazon.com',
+    environment: 'production',
+    created_at: new Date(Date.now() - 86400000 * 25).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+  },
+  {
+    id: 'cred-4',
+    project_id: 'proj-1',
+    service_name: 'Stripe Dashboard',
+    username: 'ecommerce@dizertech.com',
+    password: 'Str1pe$taging!',
+    url: 'https://dashboard.stripe.com',
+    environment: 'staging',
+    created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 3).toISOString(),
+  },
+  {
+    id: 'cred-5',
+    project_id: 'proj-1',
+    service_name: 'Supabase Dev',
+    username: 'dev@ecommerce.com',
+    password: 'D3vEnvP@ss123',
+    url: 'https://app.supabase.com',
+    environment: 'development',
+    created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+    updated_at: new Date(Date.now() - 86400000).toISOString(),
+  },
+]
+
+// Tarefas mockadas
+export const mockTasks: ProjectTask[] = [
+  {
+    id: 'task-1',
+    project_id: 'proj-1',
+    title: 'Homologar integração PIX',
+    description: 'Finalizar testes com o provedor de pagamentos e validar fluxos de falha.',
+    status: 'in-progress',
+    priority: 'high',
+    owner_id: 'mock-user-2',
+    due_date: new Date(Date.now() + 86400000 * 2).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 6).toISOString(),
+    updated_at: new Date().toISOString(),
+    owner: mockUsers[1],
+  },
+  {
+    id: 'task-2',
+    project_id: 'proj-1',
+    title: 'Melhorar performance da vitrine',
+    description: 'Auditar CLS e otimizar imagens hero no Core Web Vitals.',
+    status: 'pending',
+    priority: 'medium',
+    owner_id: 'mock-user-3',
+    due_date: new Date(Date.now() + 86400000 * 5).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+    owner: mockUsers[2],
+  },
+  {
+    id: 'task-3',
+    project_id: 'proj-1',
+    title: 'Fluxo de e-mails transacionais',
+    description: 'Configurar templates para carrinho abandonado e atualização de pedido.',
+    status: 'completed',
+    priority: 'low',
+    owner_id: 'mock-user-5',
+    due_date: new Date(Date.now() - 86400000).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 18).toISOString(),
+    updated_at: new Date(Date.now() - 86400000).toISOString(),
+    owner: mockUsers[4],
+  },
+  {
+    id: 'task-4',
+    project_id: 'proj-1',
+    title: 'Checklist de acessibilidade',
+    description: 'Garantir contraste AA e navegação por teclado em todo checkout.',
+    status: 'in-progress',
+    priority: 'high',
+    owner_id: 'mock-user-4',
+    due_date: new Date(Date.now() + 86400000 * 7).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+    updated_at: new Date(Date.now() - 3600000).toISOString(),
+    owner: mockUsers[3],
+  },
+  {
+    id: 'task-5',
+    project_id: 'proj-1',
+    title: 'Monitoramento de erros no checkout',
+    description: 'Adicionar alertas no Sentry para passos críticos do funil de compra.',
+    status: 'pending',
+    priority: 'high',
+    owner_id: 'mock-user-1',
+    due_date: new Date(Date.now() + 86400000 * 3).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 8).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+    owner: mockUsers[0],
+  },
+]
+
 // Estatísticas do Dashboard
 export const mockDashboardStats: DashboardStats = {
   total_projects: 6,
@@ -393,6 +521,16 @@ export function getProjectMembers(projectId: string): ProjectMember[] {
 // Função para obter notas de um projeto
 export function getProjectNotes(projectId: string): ProjectNote[] {
   return mockNotes.filter(n => n.project_id === projectId)
+}
+
+// Função para obter tarefas de um projeto
+export function getProjectTasks(projectId: string): ProjectTask[] {
+  return mockTasks.filter(task => task.project_id === projectId)
+}
+
+// Função para obter credenciais de um projeto
+export function getProjectCredentials(projectId: string): AccessCredential[] {
+  return mockCredentials.filter(c => c.project_id === projectId)
 }
 
 // Função para obter um projeto por ID
