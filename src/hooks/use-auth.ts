@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAuthStore } from '@/store'
 import type { Profile } from '@/types'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 export function useAuth() {
   const router = useRouter()
@@ -44,7 +45,7 @@ export function useAuth() {
 
     // Listener para mudanças de auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event: AuthChangeEvent, session: Session | null) => {
         if (event === 'SIGNED_IN' && session?.user) {
           const { data: profile } = await supabase
             .from('profiles')
