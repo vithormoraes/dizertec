@@ -106,7 +106,7 @@ export function AccessManagement({ credentials = [] }: AccessManagementProps) {
             <div className="rounded-xl border border-dashed border-white/10 py-8 text-center text-sm text-muted-foreground">
               <Key className="h-8 w-8 mx-auto mb-3 opacity-50" />
               <p>Nenhuma credencial cadastrada</p>
-              <p className="text-xs mt-1">Clique em "Nova Credencial" para adicionar</p>
+              <p className="text-xs mt-1">Clique em &quot;Nova Credencial&quot; para adicionar</p>
             </div>
           ) : (
             <div className="space-y-3">
