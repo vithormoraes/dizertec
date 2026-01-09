@@ -9,8 +9,15 @@ export type MemberRole = 'owner' | 'admin' | 'member' | 'viewer'
 // Ambientes de deploy
 export type DeploymentEnvironment = 'development' | 'staging' | 'production'
 
+// Ambiente de credencial de acesso
+export type CredentialEnvironment = 'production' | 'staging' | 'development'
+
 // Status de deployment
 export type DeploymentStatus = 'success' | 'failed' | 'pending' | 'building'
+
+// Status e prioridade de tarefas
+export type TaskStatus = 'pending' | 'in-progress' | 'review' | 'completed'
+export type TaskPriority = 'low' | 'medium' | 'high'
 
 // Profile do usuário
 export interface Profile {
@@ -81,6 +88,86 @@ export interface ProjectNote {
   // Relações
   author?: Profile
   project?: Project
+}
+
+// Tarefas do projeto
+export interface ProjectTask {
+  id: string
+  project_id: string
+  title: string
+  description: string | null
+  status: TaskStatus
+  priority: TaskPriority
+  owner_id: string
+  due_date: string | null
+  tags?: string[]
+  technologies?: string[]
+  prompts?: any[]
+  outputFormat?: string
+  created_at: string
+  updated_at: string
+  // Relações
+  owner?: Profile
+  project?: Project
+}
+
+// Credencial de acesso
+export interface AccessCredential {
+  id: string
+  project_id: string
+  service_name: string
+  username: string
+  password: string
+  url: string | null
+  environment: CredentialEnvironment
+  created_at: string
+  updated_at: string
+}
+
+// Materiais do projeto: arquivos
+export interface ProjectMaterialFile {
+  id: string
+  project_id: string
+  storage_path: string
+  file_name: string
+  content_type: string | null
+  size_bytes: number
+  description: string | null
+  uploaded_by: string
+  created_at: string
+}
+
+// Materiais do projeto: instruções/códigos
+export type ProjectMaterialNoteKind = 'instructions' | 'code'
+
+export interface ProjectMaterialNote {
+  id: string
+  project_id: string
+  kind: ProjectMaterialNoteKind
+  title: string
+  content: string
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+// Instrucoes gerais
+export type InstructionKind = 'document' | 'link' | 'text'
+
+export interface GeneralInstruction {
+  id: string
+  title: string
+  category: string | null
+  kind: InstructionKind
+  description: string | null
+  content: string | null
+  link_url: string | null
+  storage_path: string | null
+  mime_type: string | null
+  size_bytes: number | null
+  created_by: string | null
+  created_at: string
+  updated_at: string
 }
 
 // Repositório Git

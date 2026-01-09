@@ -1,46 +1,53 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { mockUser } from '@/lib/mock-data'
 
 // Flag para modo de desenvolvimento sem Supabase
 const MOCK_MODE = !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export async function middleware(request: NextRequest) {
-  // Modo mock - permite acesso a todas as rotas para desenvolvimento
-  if (MOCK_MODE) {
-    return NextResponse.next()
-  }
-
+  // Inicia resposta padrão
   let supabaseResponse = NextResponse.next({
     request,
   })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
+  // Em MOCK_MODE tratamos sempre como usuário autenticado com base no mockUser.
+  let user: any | null = MOCK_MODE ? mockUser : null
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let supabase: ReturnType<typeof createServerClient> | null = null
+
+  if (!MOCK_MODE) {
+    supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+            supabaseResponse = NextResponse.next({
+              request,
+            })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options)
+            )
+          },
+        },
+      }
+    )
+
+    const {
+      data: { user: supabaseUser },
+    } = await supabase.auth.getUser()
+
+    user = supabaseUser
+  }
+
 
   // Rotas protegidas - requer autenticação
-  const protectedPaths = ['/dashboard', '/projects', '/analytics', '/settings']
+  const protectedPaths = ['/dashboard', '/projects', '/analytics', '/settings', '/instructions']
   const isProtectedPath = protectedPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   )
@@ -50,6 +57,16 @@ export async function middleware(request: NextRequest) {
   const isAuthPath = authPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   )
+
+  // Bloqueia/Redireciona todas as rotas públicas para o app
+  const isApi = request.nextUrl.pathname.startsWith('/api')
+
+  // Se é raiz '/', direciona conforme autenticação
+  if (request.nextUrl.pathname === '/') {
+    const url = request.nextUrl.clone()
+    url.pathname = user ? '/dashboard' : '/login'
+    return NextResponse.redirect(url)
+  }
 
   // Se não está autenticado e tenta acessar rota protegida
   if (!user && isProtectedPath) {
@@ -62,6 +79,14 @@ export async function middleware(request: NextRequest) {
   if (user && isAuthPath) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  // Redireciona qualquer rota pública não permitida (não auth, não dashboard, não api) para /login
+  const isAllowed = isAuthPath || isProtectedPath || isApi
+  if (!isAllowed) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 

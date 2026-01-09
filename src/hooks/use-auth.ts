@@ -3,15 +3,24 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { mockUser } from '@/lib/mock-data'
 import { useAuthStore } from '@/store'
 import type { Profile } from '@/types'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+
+const MOCK_MODE = !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export function useAuth() {
   const router = useRouter()
   const { user, setUser, setLoading, logout: storeLogout } = useAuthStore()
 
   useEffect(() => {
+    if (MOCK_MODE) {
+      setUser(mockUser)
+      setLoading(false)
+      return
+    }
+
     const supabase = createClient()
 
     // Buscar sessão inicial
@@ -21,7 +30,7 @@ export function useAuth() {
       const { data: { session } } = await supabase.auth.getSession()
       
       if (session?.user) {
-        // Buscar profile
+        // Buscar profile real no Supabase
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
@@ -71,6 +80,12 @@ export function useAuth() {
   }, [setUser, setLoading])
 
   const logout = async () => {
+    if (MOCK_MODE) {
+      storeLogout()
+      router.push('/login')
+      return
+    }
+
     const supabase = createClient()
     await supabase.auth.signOut()
     storeLogout()
