@@ -82,7 +82,7 @@ export function useAuth() {
   const logout = async () => {
     if (MOCK_MODE) {
       storeLogout()
-      router.push('/dashboard')
+      router.push('/login')
       return
     }
 
