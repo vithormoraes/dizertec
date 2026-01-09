@@ -124,6 +124,52 @@ export interface AccessCredential {
   updated_at: string
 }
 
+// Materiais do projeto: arquivos
+export interface ProjectMaterialFile {
+  id: string
+  project_id: string
+  storage_path: string
+  file_name: string
+  content_type: string | null
+  size_bytes: number
+  description: string | null
+  uploaded_by: string
+  created_at: string
+}
+
+// Materiais do projeto: instruções/códigos
+export type ProjectMaterialNoteKind = 'instructions' | 'code'
+
+export interface ProjectMaterialNote {
+  id: string
+  project_id: string
+  kind: ProjectMaterialNoteKind
+  title: string
+  content: string
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+// Instrucoes gerais
+export type InstructionKind = 'document' | 'link' | 'text'
+
+export interface GeneralInstruction {
+  id: string
+  title: string
+  category: string | null
+  kind: InstructionKind
+  description: string | null
+  content: string | null
+  link_url: string | null
+  storage_path: string | null
+  mime_type: string | null
+  size_bytes: number | null
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
 // Repositório Git
 export interface GitRepository {
   id: string

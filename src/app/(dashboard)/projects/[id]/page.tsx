@@ -10,6 +10,7 @@ import {
   Settings,
   Users,
   FileText,
+  FolderOpen,
   Rocket,
   Activity,
   Clock,
@@ -48,6 +49,7 @@ import {
 } from '@/lib/mock-data'
 import { ViewToggle, KanbanBoard, TaskModal } from '@/components/tasks'
 import { AccessManagement } from '@/components/access-management'
+import { ProjectMaterialsSection } from '@/components/project-materials'
 import { useTasksStore } from '@/store/tasks-store'
 import type { Project, Deployment, ProjectNote, ProjectMember, ProjectTask, TaskStatus, TaskPriority, AccessCredential } from '@/types'
 
@@ -529,6 +531,10 @@ export default function ProjectDetailPage() {
             <FileText className="h-4 w-4" />
             Notas
           </TabsTrigger>
+          <TabsTrigger value="materials" className="gap-2">
+            <FolderOpen className="h-4 w-4" />
+            Materiais
+          </TabsTrigger>
           <TabsTrigger value="activity" className="gap-2">
             <Activity className="h-4 w-4" />
             Atividade
@@ -680,6 +686,14 @@ export default function ProjectDetailPage() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        {/* Materials Tab */}
+        <TabsContent value="materials" className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Materiais do Projeto</h2>
+          </div>
+          <ProjectMaterialsSection projectId={project.id} />
         </TabsContent>
 
         {/* Activity Tab */}

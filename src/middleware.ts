@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
 
 
   // Rotas protegidas - requer autenticação
-  const protectedPaths = ['/dashboard', '/projects', '/analytics', '/settings']
+  const protectedPaths = ['/dashboard', '/projects', '/analytics', '/settings', '/instructions']
   const isProtectedPath = protectedPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   )

@@ -186,6 +186,123 @@ export interface Database {
           created_at?: string
         }
       }
+
+      project_material_files: {
+        Row: {
+          id: string
+          project_id: string
+          storage_path: string
+          file_name: string
+          content_type: string | null
+          size_bytes: number
+          description: string | null
+          uploaded_by: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          project_id: string
+          storage_path: string
+          file_name: string
+          content_type?: string | null
+          size_bytes: number
+          description?: string | null
+          uploaded_by?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          project_id?: string
+          storage_path?: string
+          file_name?: string
+          content_type?: string | null
+          size_bytes?: number
+          description?: string | null
+          uploaded_by?: string
+          created_at?: string
+        }
+      }
+
+      project_material_notes: {
+        Row: {
+          id: string
+          project_id: string
+          kind: 'instructions' | 'code'
+          title: string
+          content: string
+          created_by: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          project_id: string
+          kind?: 'instructions' | 'code'
+          title: string
+          content: string
+          created_by?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          project_id?: string
+          kind?: 'instructions' | 'code'
+          title?: string
+          content?: string
+          created_by?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+
+      general_instructions: {
+        Row: {
+          id: string
+          title: string
+          category: string | null
+          kind: 'document' | 'link' | 'text'
+          description: string | null
+          content: string | null
+          link_url: string | null
+          storage_path: string | null
+          mime_type: string | null
+          size_bytes: number | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          category?: string | null
+          kind?: 'document' | 'link' | 'text'
+          description?: string | null
+          content?: string | null
+          link_url?: string | null
+          storage_path?: string | null
+          mime_type?: string | null
+          size_bytes?: number | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          category?: string | null
+          kind?: 'document' | 'link' | 'text'
+          description?: string | null
+          content?: string | null
+          link_url?: string | null
+          storage_path?: string | null
+          mime_type?: string | null
+          size_bytes?: number | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

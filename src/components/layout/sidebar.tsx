@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FolderKanban,
   BarChart3,
+  BookOpen,
   Settings,
   LogOut,
   ChevronLeft,
@@ -19,6 +20,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Projetos', href: '/projects', icon: FolderKanban },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { name: 'Instrucoes Gerais', href: '/instructions', icon: BookOpen },
   { name: 'Configurações', href: '/settings', icon: Settings },
 ]
 
